@@ -20,7 +20,7 @@ class SocketServiceExample {
       print('/: connection $socket');
       socket.on(ServerEvent.connect, (data) => _onConnect(data[0], data[1]));
       socket.on(Event.disconnecting, (data) => _onDisconnecting(data));
-      socket.on(Event.disconnect, (data) => _onDisconnect(data));
+      socket.on(Event.disconnect, (data) => _onDisconnect(data[0], data[1]));
       socket.on(Event.error, (data) => _onError(data));
       socket.on(Event.data, (data) => _onData(data));
       socket.on(Event.close, (data) => {_onClose(data)});
@@ -51,15 +51,15 @@ class SocketServiceExample {
   }
 
   void _onConnect(String namespace, String socketId) {
-    print('/: connect $socketId ');
+    print('/: connect $socketId');
   }
 
   void _onDisconnecting(dynamic data) {
-    print('/: disconnecting $data ');
+    print('/: disconnecting $data');
   }
 
-  void _onDisconnect(dynamic data) {
-    print('/: disconnect $data ');
+  void _onDisconnect(String namespace, String reason) {
+    print('$namespace: disconnect reason:$reason');
   }
 
   void _onError(dynamic data) {

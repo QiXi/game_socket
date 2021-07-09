@@ -63,7 +63,7 @@ class GameSocketServer {
     return _namespaces.containsKey(namespace);
   }
 
-  /// Create namesapce.
+  /// Create namespace.
   GameNamespace of(String namespace) {
     if (namespace[0] != '/') {
       namespace = '/' + namespace;

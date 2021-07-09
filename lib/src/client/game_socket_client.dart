@@ -12,8 +12,8 @@ import '../engine/typedef.dart';
 import 'client_options.dart';
 
 class GameSocketClient extends Emitter {
-  late final EngineSocket? _engine;
   final ClientOptions _options;
+  EngineSocket? _engine;
   var _forcedClose = false;
   var reconnectAttempts = 0;
   dynamic host = 'localhost';

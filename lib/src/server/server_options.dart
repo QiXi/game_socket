@@ -5,8 +5,6 @@ class ServerOptions {
     ..addSchema(GameSocketSchema())
     ..addSchema(RoomSchema());
 
-  static const int defaultPort = 3103;
-
   bool _locked;
   int port;
   bool supportRawData = false;
@@ -23,9 +21,9 @@ class ServerOptions {
     return _default..lock();
   }
 
-  ServerOptions({int connectionTimeout = 45000})
+  ServerOptions({int port = 3103, int connectionTimeout = 45000})
       : _locked = false,
-        port = defaultPort,
+        port = port,
         connectionTimeout = connectionTimeout;
 
   Schema? addSchema(Schema schema) {

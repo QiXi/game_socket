@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 import 'emitter.dart';
 import 'engine_event.dart';
 import 'engine_socket.dart';
-import 'server_events.dart';
 import 'typedef.dart';
 
 const _uuid = Uuid();
@@ -35,11 +34,11 @@ class EngineServer extends Emitter {
   }
 
   void _onError(error, StackTrace trace) {
-    emit(ServerEvent.error, error);
+    emit(Engine.error, error);
   }
 
   void _onDone() {
-    emit(ServerEvent.close);
+    emit(Engine.close);
   }
 
   void shutdown() {

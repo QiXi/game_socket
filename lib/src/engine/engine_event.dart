@@ -1,5 +1,5 @@
+/// Engine events
 class Engine {
-  // Engine events
   static const String open = 'open'; // (InternetAddress)
   static const String connection = 'connection'; // (EngineSocket)
   static const String data = 'data'; // (Uint8List)
