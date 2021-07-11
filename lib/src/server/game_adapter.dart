@@ -109,7 +109,7 @@ class GameAdapter extends Adapter {
     if (roomsBySocketId[socket.id]?.isEmpty == true) {
       roomsBySocketId.remove(socket.id);
     }
-    socketsByRoom[room]?.remove(socket.id);
+    socketsByRoom[room]?.remove(socket);
     if (socketsByRoom[room]?.isEmpty == true) {
       socketsByRoom.remove(room);
       namespace.emit(ServerEvent.deleteRoom, room);
