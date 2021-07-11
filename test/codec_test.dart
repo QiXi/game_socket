@@ -61,11 +61,11 @@ void main() {
       var codec = MessageEncoder();
       Message message = GameSocketMessage('/')
         ..payloadBytes = Uint8List.fromList([1, 2, 3]);
-      Schema schema = GameSocketSchema();
+      Schema schema = RoomSchema();
       var buffer = codec.encode(message, schema);
       print('$buffer');
       print('$message');
-      expect(buffer, [126, 0, 46, 1, 1, 47, 0, 1, 0, 2, 1, 2, 3]);
+      expect(buffer, [126, 1, 46, 0, 1, 47, 0, 1, 0, 0, 1, 2, 3]);
     });
   });
 
@@ -103,9 +103,9 @@ void main() {
 
     test('decode binary', () {
       var codec = PacketDecoder();
-      Schema schema = GameSocketSchema();
+      Schema schema = RoomSchema();
       var buffer =
-          Uint8List.fromList([126, 0, 46, 1, 1, 47, 0, 1, 0, 2, 1, 2, 3]);
+          Uint8List.fromList([126, 1, 46, 0, 1, 47, 0, 1, 0, 0, 1, 2, 3]);
       var packet = Packet(schema);
       codec.decode(packet, buffer, 0);
       print('$schema');
@@ -124,14 +124,14 @@ void main() {
       var buffer = codec.encode(message, schema);
       print(message);
       print(buffer);
-      expect(buffer, [126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 6]);
+      expect(buffer, [126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 4]);
     });
 
     test('decode', () {
       var codec = PacketDecoder();
       Schema schema = GameSocketSchema();
       var buffer = Uint8List.fromList(
-          [126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 6]);
+          [126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 4]);
       var packet = Packet(schema);
       codec.decode(packet, buffer, 0);
       print('$schema');

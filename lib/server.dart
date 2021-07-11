@@ -1,4 +1,5 @@
 export 'protocol.dart';
+export 'src/engine/emitter.dart';
 export 'src/engine/error.dart';
 export 'src/engine/event.dart';
 export 'src/engine/server_events.dart';

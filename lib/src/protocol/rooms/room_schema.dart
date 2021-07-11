@@ -5,9 +5,7 @@ class RoomSchema extends SimpleSchema {
 
   RoomSchema._();
 
-  factory RoomSchema() {
-    return _instance;
-  }
+  factory RoomSchema() => _instance;
 
   @override
   int get code => 1;

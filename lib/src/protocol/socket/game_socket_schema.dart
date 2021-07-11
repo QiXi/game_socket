@@ -7,9 +7,7 @@ class GameSocketSchema extends Schema {
 
   GameSocketSchema._();
 
-  factory GameSocketSchema() {
-    return _instance;
-  }
+  factory GameSocketSchema() => _instance;
 
   @override
   int get code => 0;
