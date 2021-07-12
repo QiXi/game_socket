@@ -22,8 +22,7 @@ class PacketDecoder with ExtractUint8 {
 
   int decodePacket(Packet packet, Uint8List buffer, int offset) {
     final schema = packet.schema;
-    var bitmask =
-        packet.bitMask = extractInt(buffer, offset, schema.bytesPerMask);
+    var bitmask = packet.bitMask = extractInt(buffer, offset, schema.bytesPerMask);
     offset += schema.bytesPerMask;
     final bytesPerBoolMask = schema.bytesPerBoolMask;
     if (bytesPerBoolMask > 0) {

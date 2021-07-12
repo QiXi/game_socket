@@ -47,8 +47,7 @@ class GameNamespace extends Namespace {
   @override
   void broadcast(Message message, {Set<String>? rooms, SocketId? exclude}) {
     message.namespace = name;
-    adapter.broadcast(message,
-        rooms: rooms ?? _targetRooms, excludeOne: exclude);
+    adapter.broadcast(message, rooms: rooms ?? _targetRooms, excludeOne: exclude);
   }
 
   /// Broadcast message queue to room.
@@ -63,8 +62,7 @@ class GameNamespace extends Namespace {
   /// Broadcast event to room.
   /// data as either a List<int> or String.
   @override
-  void broadcastRoomEvent(String event, String room,
-      {SocketId? exclude, dynamic data}) {
+  void broadcastRoomEvent(String event, String room, {SocketId? exclude, dynamic data}) {
     var eventMessage = RoomEvent(room, event: event, namespace: name);
     if (data is List<int>) {
       eventMessage.payloadBytes = Uint8List.fromList(data);

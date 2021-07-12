@@ -1,10 +1,7 @@
 import '../../protocol.dart';
 
 class Handshake extends GameSocketMessage {
-  Handshake(
-      {required String namespace,
-      required String token,
-      String? reconnectToken})
+  Handshake({required String namespace, required String token, String? reconnectToken})
       : super(namespace) {
     enable(GSS.handshake);
     putString(GSS.token, token);
@@ -16,8 +13,7 @@ class Handshake extends GameSocketMessage {
 }
 
 class DisconnectClient extends GameSocketMessage {
-  DisconnectClient({required String namespace, String? message})
-      : super(namespace) {
+  DisconnectClient({required String namespace, String? message}) : super(namespace) {
     enable(GSS.disconnect);
     if (message != null) {
       putString(GSS.message, message);
@@ -26,15 +22,13 @@ class DisconnectClient extends GameSocketMessage {
 }
 
 class JoinRoom extends RoomMessage {
-  JoinRoom(String roomName, {required String namespace})
-      : super(namespace, roomName) {
+  JoinRoom(String roomName, {required String namespace}) : super(namespace, roomName) {
     enable(RoomSchema.joinRoom);
   }
 }
 
 class JoinRoomError extends RoomMessage {
-  JoinRoomError(String roomName,
-      {required String namespace, required String message})
+  JoinRoomError(String roomName, {required String namespace, required String message})
       : super(namespace, roomName) {
     this
       ..enable(RoomSchema.joinRoomError)
@@ -43,15 +37,13 @@ class JoinRoomError extends RoomMessage {
 }
 
 class LeaveRoom extends RoomMessage {
-  LeaveRoom(String roomName, {required String namespace})
-      : super(namespace, roomName) {
+  LeaveRoom(String roomName, {required String namespace}) : super(namespace, roomName) {
     enable(RoomSchema.leaveRoom);
   }
 }
 
 class UserEnterRoom extends RoomMessage {
-  UserEnterRoom(String roomName,
-      {required String namespace, String? playerName, int? playerId})
+  UserEnterRoom(String roomName, {required String namespace, String? playerName, int? playerId})
       : super(namespace, roomName) {
     enable(RoomSchema.userEnterRoom);
     if (playerName != null) {
@@ -64,10 +56,8 @@ class UserEnterRoom extends RoomMessage {
 }
 
 class UserExitRoom extends UserEnterRoom {
-  UserExitRoom(String roomName,
-      {required String namespace, String? playerName, int? playerId})
-      : super(roomName,
-            namespace: namespace, playerName: playerName, playerId: playerId) {
+  UserExitRoom(String roomName, {required String namespace, String? playerName, int? playerId})
+      : super(roomName, namespace: namespace, playerName: playerName, playerId: playerId) {
     enable(RoomSchema.userExitRoom);
   }
 }

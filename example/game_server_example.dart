@@ -10,8 +10,7 @@ class SocketServiceExample {
   late Namespace home;
 
   SocketServiceExample() {
-    server = GameSocketServer(
-        options: ServerOptions.byDefault()..supportRawData = true);
+    server = GameSocketServer(options: ServerOptions.byDefault()..supportRawData = true);
     home = server.of('/home');
     home.on(ServerEvent.connect, (data) => _onHomeConnect(data));
     home.on('hello', (packet) => _onHomeData(packet));
@@ -28,8 +27,7 @@ class SocketServiceExample {
     server.on(ServerEvent.error, (data) => {print('/: eventError $data')});
     server.on(ServerEvent.close, (data) => {print('/: serverClose $data')});
     server.on(ServerEvent.raw, (data) => {print('/: raw $data')});
-    server.on(
-        ServerEvent.createRoom, (data) => {print('/: createRoom: $data')});
+    server.on(ServerEvent.createRoom, (data) => {print('/: createRoom: $data')});
     server.on(ServerEvent.joinRoom, (data) => {print('/: joinRoom $data')});
     server.on(ServerEvent.leaveRoom, (data) => {print('/: leaveRoom $data')});
     server.on(ServerEvent.deleteRoom, (data) => {print('/: deleteRoom $data')});

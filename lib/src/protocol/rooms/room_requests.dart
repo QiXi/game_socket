@@ -17,8 +17,7 @@ class RoomMessage extends Message {
 }
 
 class JoinRoomRequest extends RoomMessage {
-  JoinRoomRequest(String roomName,
-      {String namespace = '/', String? roomToLeave})
+  JoinRoomRequest(String roomName, {String namespace = '/', String? roomToLeave})
       : super(namespace, roomName) {
     enable(RoomSchema.joinRoom);
     if (roomToLeave != null) {
@@ -28,17 +27,14 @@ class JoinRoomRequest extends RoomMessage {
 }
 
 class LeaveRoomRequest extends RoomMessage {
-  LeaveRoomRequest(String roomName, {String namespace = '/'})
-      : super(namespace, roomName) {
+  LeaveRoomRequest(String roomName, {String namespace = '/'}) : super(namespace, roomName) {
     enable(RoomSchema.leaveRoom);
   }
 }
 
 class CreateRoomRequest extends JoinRoomRequest {
   CreateRoomRequest(String roomName,
-      {String namespace = '/',
-      bool joinAfterCreation = true,
-      String? roomToLeave})
+      {String namespace = '/', bool joinAfterCreation = true, String? roomToLeave})
       : super(roomName, namespace: namespace, roomToLeave: roomToLeave) {
     this
       ..enable(RoomSchema.createRoom)
@@ -48,10 +44,7 @@ class CreateRoomRequest extends JoinRoomRequest {
 
 class RoomEvent extends RoomMessage {
   RoomEvent(String targetRoom,
-      {required String namespace,
-      required String event,
-      String? message,
-      List<int>? payload})
+      {required String namespace, required String event, String? message, List<int>? payload})
       : super(namespace, targetRoom) {
     enable(RoomSchema.event);
     putString(RoomSchema.eventName, event);

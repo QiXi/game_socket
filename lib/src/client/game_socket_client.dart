@@ -23,8 +23,7 @@ class GameSocketClient extends Emitter {
   Timer? _pingTimer;
   bool waitingPong = false;
 
-  GameSocketClient({ClientOptions? options})
-      : _options = options ?? ClientOptions();
+  GameSocketClient({ClientOptions? options}) : _options = options ?? ClientOptions();
 
   ClientOptions getOptions() => _options;
 
@@ -44,8 +43,7 @@ class GameSocketClient extends Emitter {
     this.port = port;
     this.namespace = namespace;
     _forcedClose = false;
-    Socket.connect(host, port, timeout: _options.connectTimeout)
-        .then((Socket socket) {
+    Socket.connect(host, port, timeout: _options.connectTimeout).then((Socket socket) {
       bind(EngineSocket(socket, 'this'));
       _engine!.onOpen();
     }).catchError((e) {

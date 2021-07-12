@@ -25,6 +25,5 @@ abstract class Namespace extends Emitter {
   void broadcastQueue(List<Message> queue, String room, {SocketId? exclude});
 
   /// Broadcast event to room.
-  void broadcastRoomEvent(String event, String room,
-      {SocketId? exclude, dynamic data});
+  void broadcastRoomEvent(String event, String room, {SocketId? exclude, dynamic data});
 }

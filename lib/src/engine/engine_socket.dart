@@ -15,8 +15,7 @@ class EngineSocket extends Emitter {
   int writtenBytes = 0;
   late DateTime lastActivityTime;
 
-  EngineSocket(this._socket, this.socketId)
-      : readyState = ReadyState.connecting {
+  EngineSocket(this._socket, this.socketId) : readyState = ReadyState.connecting {
     lastActivityTime = DateTime.now();
     _socket.listen(_onData, onError: _onError, onDone: _onDone);
   }

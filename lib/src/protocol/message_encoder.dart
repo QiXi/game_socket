@@ -24,8 +24,7 @@ class MessageEncoder with InsertUint8 {
     return buffer;
   }
 
-  void encodeMessage(
-      Uint8List buffer, int offset, Message message, Schema schema) {
+  void encodeMessage(Uint8List buffer, int offset, Message message, Schema schema) {
     final bitmaskOffset = offset;
     var bitmask = 0;
     offset += schema.bytesPerMask; // place for a mask

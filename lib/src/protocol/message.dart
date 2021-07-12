@@ -34,8 +34,7 @@ class Message with ZigZag, MessageBody, Radians {
     return (value) ? enable(key) : disable(key);
   }
 
-  bool containsInt(int id) =>
-      id >= 0 && id < schema.intCount && intList[id] != 0;
+  bool containsInt(int id) => id >= 0 && id < schema.intCount && intList[id] != 0;
 
   int getInt(int id) {
     return (id >= 0 && id < schema.intCount) ? zigzagDecode(intList[id]) : 0;

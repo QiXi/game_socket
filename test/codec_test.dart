@@ -59,8 +59,7 @@ void main() {
 
     test('encode binary', () {
       var codec = MessageEncoder();
-      Message message = GameSocketMessage('/')
-        ..payloadBytes = Uint8List.fromList([1, 2, 3]);
+      Message message = GameSocketMessage('/')..payloadBytes = Uint8List.fromList([1, 2, 3]);
       Schema schema = RoomSchema();
       var buffer = codec.encode(message, schema);
       print('$buffer');
@@ -104,8 +103,7 @@ void main() {
     test('decode binary', () {
       var codec = PacketDecoder();
       Schema schema = RoomSchema();
-      var buffer =
-          Uint8List.fromList([126, 1, 46, 0, 1, 47, 0, 1, 0, 0, 1, 2, 3]);
+      var buffer = Uint8List.fromList([126, 1, 46, 0, 1, 47, 0, 1, 0, 0, 1, 2, 3]);
       var packet = Packet(schema);
       codec.decode(packet, buffer, 0);
       print('$schema');
@@ -130,8 +128,7 @@ void main() {
     test('decode', () {
       var codec = PacketDecoder();
       Schema schema = GameSocketSchema();
-      var buffer = Uint8List.fromList(
-          [126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 4]);
+      var buffer = Uint8List.fromList([126, 0, 46, 0, 5, 47, 104, 111, 109, 101, 0, 0, 4]);
       var packet = Packet(schema);
       codec.decode(packet, buffer, 0);
       print('$schema');
@@ -186,11 +183,7 @@ void main() {
         ..putRadians(2, -pi);
       print(message);
       message.enable(GameSocketSchema.connect);
-      print([
-        message.getRadians(0),
-        message.getRadians(1),
-        message.getRadians(2)
-      ]);
+      print([message.getRadians(0), message.getRadians(1), message.getRadians(2)]);
       expect(message.getRadians(0), pi * 2);
       expect(message.getRadians(1), pi / 2);
       expect(message.getRadians(2), -pi);

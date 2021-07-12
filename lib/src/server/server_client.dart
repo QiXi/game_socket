@@ -21,8 +21,7 @@ class ServerClient {
   ServerClient(this._server, this._socket) {
     _socket.on(Engine.data, (data) => _onData(data));
     _socket.on(Engine.error, (data) => _onError(data));
-    _socket.on(
-        Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
+    _socket.on(Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
     maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize;
   }
 

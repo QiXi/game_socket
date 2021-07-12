@@ -105,8 +105,7 @@ class GameClient extends Emitter {
   }
 
   /// Broadcasting event to room.
-  void broadcastRoomEvent(String event, String room,
-      {SocketId? exclude, dynamic data}) {
+  void broadcastRoomEvent(String event, String room, {SocketId? exclude, dynamic data}) {
     namespace.broadcastRoomEvent(event, room, data: data, exclude: exclude);
   }
 
