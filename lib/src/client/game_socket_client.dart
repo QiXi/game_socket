@@ -133,7 +133,7 @@ class GameSocketClient extends Emitter {
   }
 
   @protected
-  void onError(String error) {
+  void onError(Object error) {
     emit(Event.error, error);
   }
 

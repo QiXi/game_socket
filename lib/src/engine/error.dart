@@ -9,4 +9,5 @@ class ErrorString {
   static const String unsupportedSchema = 'Unsupported schema';
   static const String decode = 'Decryption error';
   static const String largeSize = 'Incoming request size too large';
+  static const String internalError = 'Internal error';
 }

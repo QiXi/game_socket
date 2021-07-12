@@ -20,7 +20,7 @@ class ServerClient {
 
   ServerClient(this._server, this._socket) {
     _socket.on(Engine.data, (data) => _onData(data));
-    _socket.on(Engine.error, (data) => _onError(data));
+    _socket.on(Engine.error, (data) => _onEngineError(data));
     _socket.on(Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
     maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize;
   }
@@ -76,6 +76,10 @@ class ServerClient {
         }
       } while (Protocol.checkHeader(data, offset));
     }
+  }
+
+  void _onEngineError(Object e) {
+    _onError('${ErrorString.internalError} $e');
   }
 
   void _onError(String error) {
