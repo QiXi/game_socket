@@ -21,7 +21,7 @@ class EngineServer extends Emitter {
     }
     ServerSocket.bind(address, port).then((ServerSocket socket) {
       server = socket;
-      server!.listen(_onData, onError: _onError, onDone: _onDone);
+      socket.listen(_onData, onError: _onError, onDone: _onDone);
     });
   }
 

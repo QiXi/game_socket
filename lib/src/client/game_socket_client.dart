@@ -57,11 +57,11 @@ class GameSocketClient extends Emitter {
   @internal
   void bind(EngineSocket engine) {
     _engine = engine;
-    _engine!.on(Engine.open, (address) => onOpen(address));
-    _engine!.on(Engine.data, (data) => onData(data));
-    _engine!.on(Engine.error, (error) => onError(error));
-    _engine!.on(Engine.closing, (_) => onClosing());
-    _engine!.on(Engine.close, (_) => onClose(_forcedClose));
+    engine.on(Engine.open, (address) => onOpen(address));
+    engine.on(Engine.data, (data) => onData(data));
+    engine.on(Engine.error, (error) => onError(error));
+    engine.on(Engine.closing, (_) => onClosing());
+    engine.on(Engine.close, (_) => onClose(_forcedClose));
   }
 
   /// Send a message.
@@ -139,7 +139,7 @@ class GameSocketClient extends Emitter {
 
   @protected
   void onClosing() {
-    if (_pingTimer != null) _pingTimer!.cancel();
+    _pingTimer?.cancel();
     emit(Event.closing);
   }
 
@@ -217,7 +217,7 @@ class GameSocketClient extends Emitter {
   }
 
   set pingInterval(Duration interval) {
-    if (_pingTimer != null) _pingTimer!.cancel();
+    _pingTimer?.cancel();
     _pingInterval = interval;
     if (_pingInterval.inSeconds == 0) return;
     _pingTimer = Timer.periodic(interval, (timer) {

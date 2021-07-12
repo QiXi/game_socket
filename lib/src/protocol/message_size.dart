@@ -4,7 +4,7 @@ import 'schema.dart';
 
 int computeMessageSize(Message message, Schema schema) {
   var size = Protocol.bytesPerHeader;
-  size += (message.namespace != null) ? message.namespace!.length : 0;
+  size += message.namespace?.length ?? 0;
   size += schema.bytesPerBoolMask + schema.bytesPerMask;
   var intCount = schema.intCount;
   if (intCount > 0) {
