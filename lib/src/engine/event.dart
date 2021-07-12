@@ -43,5 +43,6 @@ class Event {
   static const String send = 'send';
 
   static const String ping = 'ping';
+  // (int lastPing, int avgPing)
   static const String pong = 'pong';
 }

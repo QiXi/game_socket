@@ -9,6 +9,7 @@ import '../engine/emitter.dart';
 import '../engine/engine_event.dart';
 import '../engine/engine_socket.dart';
 import '../engine/typedef.dart';
+import 'avg_ping.dart';
 import 'client_options.dart';
 
 class GameSocketClient extends Emitter {
@@ -20,6 +21,7 @@ class GameSocketClient extends Emitter {
   int port = 3103;
   String namespace = '/';
   Duration _pingInterval = Duration(seconds: 0);
+  final AvgPing ping = AvgPing();
   Timer? _pingTimer;
   bool waitingPong = false;
 
@@ -191,10 +193,7 @@ class GameSocketClient extends Emitter {
       sendMessage(Pong(packet.time));
       emit(Event.ping);
     } else if (packet.pong) {
-      waitingPong = false;
-      var now = DateTime.now().millisecondsSinceEpoch % maxInt32;
-      var time = now - packet.time;
-      emit(Event.pong, time);
+      onPongPacket(packet);
     }
     // connection
     else if (packet.handshake) {
@@ -206,6 +205,18 @@ class GameSocketClient extends Emitter {
     // other
     else {
       onPacket(packet);
+    }
+  }
+
+  @protected
+  void onPongPacket(GameSocketPacket packet) {
+    waitingPong = false;
+    var now = DateTime.now().millisecondsSinceEpoch % maxInt32;
+    var time = now - packet.time;
+    ping.update(time);
+    emit(Event.pong, [time, ping.time]);
+    if (_options.disconnectOnHighPing && ping.time > _options.limitHighPing) {
+      close();
     }
   }
 
