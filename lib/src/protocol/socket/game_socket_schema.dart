@@ -16,7 +16,7 @@ class GameSocketSchema extends Schema {
   int get version => 0;
 
   // bool (properties or event as a binary flag)
-  static const int reserved_bool = 0; // maybe udp
+  static const int reservedBool = 0; // maybe udp
   static const int utf8 = 1; // reserved for UTF-8
   static const int connect = 2;
   static const int disconnect = 3;
@@ -28,7 +28,7 @@ class GameSocketSchema extends Schema {
   int get boolCount => 8;
 
   // int8
-  static const int value_int8 = 0; // reserved int8
+  static const int reservedInt8 = 0; // reserved int8
   static const int value = 1; // reserved
   static const int errorCode = value; // alias for value
   static const int pingInterval = 2; // reserved
@@ -36,12 +36,12 @@ class GameSocketSchema extends Schema {
   int get int8Count => 3;
 
   // int16
-  static const int value_int16 = 3; // reserved int16
+  static const int reservedInt16 = 3; // reserved int16
   @override
   int get int16Count => 1;
 
   // int32
-  static const int value_int32 = 4; // reserved int32
+  static const int reservedInt32 = 4; // reserved int32
   static const int time = 5; //
   @override
   int get int32Count => 2;

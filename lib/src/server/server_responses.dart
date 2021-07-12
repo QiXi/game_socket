@@ -65,9 +65,7 @@ class UserExitRoom extends UserEnterRoom {
 class KickUser extends GameSocketMessage {
   int delay;
 
-  KickUser({required String message, int delay = 0})
-      : delay = delay,
-        super('') {
+  KickUser({required String message, this.delay = 0}) : super('') {
     putString(GSS.message, message);
   }
 }

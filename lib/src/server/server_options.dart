@@ -21,10 +21,8 @@ class ServerOptions {
     return _default..lock();
   }
 
-  ServerOptions({int port = 3103, int connectionTimeout = 45000})
-      : _locked = false,
-        port = port,
-        connectionTimeout = connectionTimeout;
+  ServerOptions({this.port = 3103, this.connectionTimeout = 45000})
+      : _locked = false;
 
   Schema? addSchema(Schema schema) {
     _schemas[schema.code] = schema;

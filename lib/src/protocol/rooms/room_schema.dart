@@ -14,7 +14,7 @@ class RoomSchema extends SimpleSchema {
   int get version => 0;
 
   // bool (properties or event as a binary flag)
-  static const int reserved_bool = 0; // maybe udp
+  static const int reservedBool = 0; // maybe udp
   static const int utf8 = 1; // reserved for UTF-8
   static const int createRoom = 2;
   static const int deleteRoom = 3;
@@ -28,7 +28,7 @@ class RoomSchema extends SimpleSchema {
   int get boolCount => 10;
 
   // int8
-  static const int reserved_int8 = 0; // reserved int8
+  static const int reservedInt8 = 0; // reserved int8
   static const int errorCode = 1; //
   @override
   int get int8Count => 2;
