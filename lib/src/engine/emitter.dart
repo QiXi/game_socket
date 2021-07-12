@@ -50,7 +50,7 @@ class Emitter<T> {
   }
 
   bool hasListeners(String event) {
-    return _events[event]?.isNotEmpty == true;
+    return _events[event]?.isNotEmpty ?? true;
   }
 
   @override

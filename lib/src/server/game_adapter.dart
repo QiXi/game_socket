@@ -100,17 +100,17 @@ class GameAdapter extends Adapter {
 
   @override
   void remove(String room, GameClient socket) {
-    if (roomsBySocketId[socket.id]?.remove(room) == true) {
+    if (roomsBySocketId[socket.id]?.remove(room) ?? true) {
       namespace.emit(ServerEvent.leaveRoom, [room, socket.id]);
       if (sendRoomEvents) {
         socket.send(LeaveRoom(room, namespace: namespace.name));
       }
     }
-    if (roomsBySocketId[socket.id]?.isEmpty == true) {
+    if (roomsBySocketId[socket.id]?.isEmpty ?? true) {
       roomsBySocketId.remove(socket.id);
     }
     socketsByRoom[room]?.remove(socket);
-    if (socketsByRoom[room]?.isEmpty == true) {
+    if (socketsByRoom[room]?.isEmpty ?? true) {
       socketsByRoom.remove(room);
       namespace.emit(ServerEvent.deleteRoom, room);
     }

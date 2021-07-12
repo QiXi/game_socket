@@ -50,7 +50,7 @@ class PacketDecoder with ExtractUint8 {
       }
       idx++;
     }
-    if (schema.includedBytes == true) {
+    if (schema.includedBytes) {
       if (boolFromMask(bitmask, propertiesCount, idx)) {
         var length = buffer.length - offset; //TODO len
         packet.payloadBytes = extractUint8List(buffer, offset, length);

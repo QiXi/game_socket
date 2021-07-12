@@ -48,7 +48,7 @@ class MessageEncoder with InsertUint8 {
       }
       bitmask <<= 1;
     }
-    if (schema.includedBytes == true) {
+    if (schema.includedBytes) {
       if (message.containsPayload()) {
         offset = insertUint8List(buffer, offset, message.payloadBytes!);
         bitmask |= 1;

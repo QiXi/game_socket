@@ -21,11 +21,11 @@ abstract class Schema {
 
   int get stringsCount;
 
-  bool? get includedBytes;
+  bool get includedBytes;
 
   int get maxProperties {
     var count = intCount + stringsCount;
-    if (includedBytes == true) count += 1;
+    if (includedBytes) count += 1;
     return count;
   }
 }
@@ -47,5 +47,5 @@ abstract class SimpleSchema extends Schema {
   int get stringsCount => 0;
 
   @override
-  bool? get includedBytes => false;
+  bool get includedBytes => false;
 }

@@ -50,7 +50,7 @@ class RoomSchema extends SimpleSchema {
   int get stringsCount => 6;
 
   @override
-  bool? get includedBytes => true;
+  bool get includedBytes => true;
 
   @override
   String toString() {

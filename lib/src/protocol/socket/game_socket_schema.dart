@@ -58,7 +58,7 @@ class GameSocketSchema extends Schema {
   int get stringsCount => 6;
 
   @override
-  bool? get includedBytes => false;
+  bool get includedBytes => false;
 
   @override
   String toString() {
