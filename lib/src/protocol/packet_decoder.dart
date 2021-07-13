@@ -42,8 +42,7 @@ class PacketDecoder with ExtractUint8 {
     }
     for (var id = 0; id < schema.stringsCount; id++) {
       if (boolFromMask(bitmask, propertiesCount, idx)) {
-        var length = extractInt(buffer, offset, 1);
-        offset++;
+        var length = extractInt(buffer, offset++, 1);
         packet.putString(id, extractString(buffer, offset, length));
         offset += length;
       }
