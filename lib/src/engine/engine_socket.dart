@@ -5,17 +5,19 @@ import 'package:meta/meta.dart';
 
 import 'emitter.dart';
 import 'engine_event.dart';
+import 'socket_stat.dart';
 import 'typedef.dart';
 
 class EngineSocket extends Emitter {
   final Socket _socket;
   final SocketId socketId;
   ReadyState readyState;
-  int readBytes = 0;
-  int writtenBytes = 0;
+  final SocketStat stat;
   late DateTime lastActivityTime;
 
-  EngineSocket(this._socket, this.socketId) : readyState = ReadyState.connecting {
+  EngineSocket(this._socket, this.socketId)
+      : readyState = ReadyState.connecting,
+        stat = SocketStat() {
     lastActivityTime = DateTime.now();
     _socket.listen(_onData, onError: _onError, onDone: _onDone);
   }
@@ -34,7 +36,7 @@ class EngineSocket extends Emitter {
 
   void _onData(Uint8List data) {
     lastActivityTime = DateTime.now();
-    readBytes += data.length;
+    stat.readBytes += data.length;
     emit(Engine.data, data);
   }
 
@@ -51,7 +53,7 @@ class EngineSocket extends Emitter {
     if (readyState == ReadyState.open) {
       _socket.add(data);
     }
-    writtenBytes += data.length;
+    stat.writtenBytes += data.length;
     lastActivityTime = DateTime.now();
   }
 

@@ -31,12 +31,14 @@ class GameSocketClient extends Emitter {
 
   ReadyState get state => _engine?.readyState ?? ReadyState.closed;
 
-  int get readBytes => _engine?.readBytes ?? 0;
+  int get readBytes => _engine?.stat.readBytes ?? 0;
 
-  int get writtenBytes => _engine?.writtenBytes ?? 0;
+  int get writtenBytes => _engine?.stat.writtenBytes ?? 0;
 
   /// The [InternetAddress] used to connect this socket.
   InternetAddress? get address => _engine?.address;
+
+  SocketStat? get statistic => _engine?.stat;
 
   /// A TCP connection between two sockets.
   /// [host] can either be a [String] or an [InternetAddress].
@@ -70,6 +72,7 @@ class GameSocketClient extends Emitter {
       message.namespace ??= namespace;
       var rawMessage = messageEncoder.encode(message, message.schema);
       _engine!.send(rawMessage);
+      _engine!.stat.addWrittenPacket();
       emit(Event.send, message);
     }
   }
@@ -170,6 +173,7 @@ class GameSocketClient extends Emitter {
 
   @protected
   void onDecoded(Packet packet) {
+    _engine?.stat.addReadPacket();
     if (packet is GameSocketPacket) {
       onGameSocketPacket(packet);
     } else if (packet is RoomPacket) {

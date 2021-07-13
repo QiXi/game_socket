@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:meta/meta.dart';
 
+import '../../client.dart';
 import '../../protocol.dart';
 import '../engine/emitter.dart';
 import '../engine/event.dart';
@@ -45,6 +46,8 @@ class GameClient extends Emitter {
   Set<String> get joinedRooms => _joinedRooms;
 
   Duration getIdleTime() => _parent.getIdleTime();
+
+  SocketStat get statistic => _parent.statistic;
 
   /// Joins a room.
   void join(String room) {

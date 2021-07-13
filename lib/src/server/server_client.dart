@@ -31,12 +31,15 @@ class ServerClient {
 
   Socket getConnection() => _socket.getConnection();
 
+  SocketStat get statistic => _socket.stat;
+
   void sendMessage(Message message) {
     if (_socket.readyState == ReadyState.open) {
       if (message.raw == null) {
         var rawMessage = messageEncoder.encode(message, message.schema);
         message.raw = rawMessage;
         _socket.send(rawMessage);
+        _socket.stat.addWrittenPacket();
       } else {
         _socket.send(message.raw!);
       }
@@ -122,6 +125,7 @@ class ServerClient {
   }
 
   void _onDecoded(Packet packet) {
+    _socket.stat.addReadPacket();
     if (packet is GameSocketPacket) {
       _onGameSocketPacket(packet);
     } else {
