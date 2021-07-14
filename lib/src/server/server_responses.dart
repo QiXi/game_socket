@@ -22,8 +22,15 @@ class DisconnectClient extends GameSocketMessage {
 }
 
 class JoinRoom extends RoomMessage {
-  JoinRoom(String roomName, {required String namespace}) : super(namespace, roomName) {
+  JoinRoom(String roomName, {required String namespace, String? playerName, int? playerId})
+      : super(namespace, roomName) {
     enable(RoomSchema.joinRoom);
+    if (playerName != null) {
+      putString(RoomSchema.playerName, playerName);
+    }
+    if (playerId != null) {
+      putInt(RoomSchema.playerId, playerId);
+    }
   }
 }
 
