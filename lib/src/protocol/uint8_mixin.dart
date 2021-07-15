@@ -17,9 +17,9 @@ mixin InsertUint8 {
   }
 
   int insertInt16(Uint8List buffer, int offset, int element) {
-    buffer[offset++] = element >> 8;
-    buffer[offset++] = element;
-    return offset;
+    buffer[offset + 1] = element;
+    buffer[offset] = element >> 8;
+    return offset + 2;
   }
 
   int insertString(Uint8List buffer, int offset, String element) {
@@ -36,6 +36,8 @@ mixin InsertUint8 {
   }
 
   int insertUint8List(Uint8List buffer, int offset, Uint8List element) {
+    insertInt16(buffer, offset, element.length);
+    offset += 2;
     buffer.setAll(offset, element);
     return offset += element.length;
   }

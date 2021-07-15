@@ -23,7 +23,7 @@ int computeMessageSize(Message message, Schema schema) {
     }
   }
   if (schema.includedBytes && message.containsPayload()) {
-    size += message.payloadBytes!.length;
+    size += 2 + message.payloadBytes!.length;
   }
   return message.bytesPerMessage = size;
 }
