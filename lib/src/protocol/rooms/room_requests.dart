@@ -4,16 +4,9 @@ import '../message.dart';
 import 'room_schema.dart';
 
 class RoomMessage extends Message {
-  RoomMessage(String namespace, String roomName) : super(RoomSchema()) {
-    this
-      ..namespace = namespace
-      ..putString(RoomSchema.roomName, roomName);
+  RoomMessage(String namespace, String roomName) : super(RoomSchema(), namespace) {
+    putString(RoomSchema.roomName, roomName);
   }
-
-// @override
-// String toString() {
-//   return 'RoomMessage{ ${super.toString()} [$hashCode]}';
-// }
 }
 
 class JoinRoomRequest extends RoomMessage {

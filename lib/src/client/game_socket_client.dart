@@ -69,7 +69,7 @@ class GameSocketClient extends Emitter {
   /// Send a message.
   void sendMessage(Message message) {
     if (state == ReadyState.open) {
-      message.namespace ??= namespace;
+      message.namespace = namespace;
       var rawMessage = messageEncoder.encode(message, message.schema);
       _engine!.send(rawMessage);
       _engine!.stat.addWrittenPacket();

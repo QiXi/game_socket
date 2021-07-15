@@ -7,7 +7,7 @@ import 'zigzag_mixin.dart';
 class Message with ZigZag, MessageBody, Radians {
   @override
   final Schema schema;
-  String? namespace;
+  String namespace;
   final Map<int, String> stringList;
   @override
   final List<int> intList;
@@ -16,11 +16,11 @@ class Message with ZigZag, MessageBody, Radians {
   Uint8List? payloadBytes;
   Uint8List? raw;
 
-  Message(this.schema)
+  Message(this.schema, [this.namespace = '/'])
       : stringList = {},
         intList = List.filled(schema.intCount, 0);
 
-  String getNamespace() => namespace ?? '/';
+  String getNamespace() => namespace;
 
   bool isEnabled(int id) => ((boolMask >> id) & 0x1) == 1;
 

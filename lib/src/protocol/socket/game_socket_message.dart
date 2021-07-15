@@ -4,9 +4,7 @@ import 'game_socket_schema.dart';
 typedef GSM = GameSocketMessage;
 
 class GameSocketMessage extends Message {
-  GameSocketMessage(String namespace) : super(GameSocketSchema()) {
-    this.namespace = namespace;
-  }
+  GameSocketMessage(String namespace) : super(GameSocketSchema(), namespace);
 }
 
 class ErrorMessage extends GameSocketMessage {

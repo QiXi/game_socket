@@ -144,7 +144,7 @@ class ServerClient {
 
   void _onGameSocketPacket(GameSocketPacket packet) {
     if (packet.connect) {
-      connectTo(packet.namespace!); // packet.data
+      connectTo(packet.namespace); // packet.data
     } else if (packet.ping) {
       sendMessage(Pong(packet.time));
     } else if (packet.pong) {

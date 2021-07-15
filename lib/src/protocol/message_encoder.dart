@@ -19,7 +19,7 @@ class MessageEncoder with InsertUint8 {
     buffer[offset++] = schema.code;
     buffer[offset++] = Protocol.dot;
     buffer[offset++] = schema.version;
-    offset = insertString(buffer, offset, message.namespace ?? '/');
+    offset = insertString(buffer, offset, message.namespace);
     encodeMessage(buffer, offset, message, schema);
     return buffer;
   }
