@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' show InternetAddress;
 import 'dart:typed_data';
 
 import 'package:game_socket/client.dart';

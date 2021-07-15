@@ -1,5 +1,5 @@
 import 'dart:core';
-import 'dart:io';
+import 'dart:io' show InternetAddress;
 
 import 'package:meta/meta.dart';
 

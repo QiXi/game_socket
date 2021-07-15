@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show InternetAddress;
 
 import '../../server.dart';
 import '../engine/engine_event.dart';

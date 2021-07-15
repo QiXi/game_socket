@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show InternetAddress, Socket;
 import 'dart:typed_data';
 
 import 'package:meta/meta.dart';

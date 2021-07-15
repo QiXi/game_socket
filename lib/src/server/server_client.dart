@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' show Socket;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:meta/meta.dart';
