@@ -29,10 +29,10 @@ abstract class Adapter /*extends Emitter */ {
   void remove(String room, GameClient socket);
 
   @protected
-  Iterator<GameClient>? listClients(String room);
+  Iterator<GameClient>? clientsFrom(String room);
 
   @protected
-  Iterator<String>? listRooms(SocketId socketId);
+  Iterator<String>? roomsFrom(SocketId socketId);
 }
 
 abstract class AdapterFactory {

@@ -8,9 +8,9 @@ import 'namespace.dart';
 
 class GameAdapter extends Adapter {
   static final Set<SocketId> _emptyExclusion = {};
-  bool sendRoomEvents;
+  bool useDefaultRoomEvents;
 
-  GameAdapter(Namespace namespace, this.sendRoomEvents) : super(namespace);
+  GameAdapter(Namespace namespace, this.useDefaultRoomEvents) : super(namespace);
 
   @override
   void broadcast(Message message,
@@ -93,7 +93,7 @@ class GameAdapter extends Adapter {
     }
     roomsBySocketId[socketId]!.add(room);
     namespace.emit(ServerEvent.joinRoom, [room, socketId]);
-    if (sendRoomEvents) {
+    if (useDefaultRoomEvents) {
       socket.send(JoinRoom(room, namespace: namespace.name));
     }
   }
@@ -102,7 +102,7 @@ class GameAdapter extends Adapter {
   void remove(String room, GameClient socket) {
     if (roomsBySocketId[socket.id]?.remove(room) ?? true) {
       namespace.emit(ServerEvent.leaveRoom, [room, socket.id]);
-      if (sendRoomEvents) {
+      if (useDefaultRoomEvents) {
         socket.send(LeaveRoom(room, namespace: namespace.name));
       }
     }
@@ -117,12 +117,12 @@ class GameAdapter extends Adapter {
   }
 
   @override
-  Iterator<GameClient>? listClients(String room) {
+  Iterator<GameClient>? clientsFrom(String room) {
     return socketsByRoom[room]?.iterator;
   }
 
   @override
-  Iterator<String>? listRooms(SocketId socketId) {
+  Iterator<String>? roomsFrom(SocketId socketId) {
     return roomsBySocketId[socketId]?.iterator;
   }
 }
