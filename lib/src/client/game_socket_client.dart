@@ -69,7 +69,7 @@ class GameSocketClient extends Emitter {
   /// Send a message.
   void sendMessage(Message message) {
     if (state == ReadyState.open) {
-      message.namespace = namespace;
+      //message.namespace = namespace;//TODO
       var rawMessage = messageEncoder.encode(message, message.schema);
       _engine!.send(rawMessage);
       _engine!.stat.addWrittenPacket();
@@ -100,6 +100,7 @@ class GameSocketClient extends Emitter {
 
   @protected
   void onData(Uint8List data) {
+    emit(Event.data, data);
     var offset = 0;
     if (!Protocol.checkHeader(data, offset)) {
       onRaw(data);
