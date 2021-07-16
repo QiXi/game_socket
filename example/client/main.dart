@@ -9,30 +9,28 @@ void main() {
 }
 
 class GameClientExample extends GameSocketClient {
-  static const String tag = 'Example:';
-
   GameClientExample() {
     on(Event.open, (address) => _onOpen(address));
     on(Event.handshake, (data) => _onHandshake(data));
     on(Event.data, (data) => _onData(data));
     on(Event.raw, (data) => _onRawData(data));
     on(Event.error, (error) => _onError(error));
-    on(Event.closing, (_) => {print('$tag closing')});
+    on(Event.closing, (_) => {print('closing')});
     on(Event.close, (_) => _onClose());
     on(Event.roomPacket, (packet) => _onRoomPacket(packet));
     on(Event.packet, (packet) => _onPacket(packet));
-    on(Event.disconnecting, (reason) => {print('$tag disconnecting $reason')});
-    on(Event.disconnect, (reason) => {print('$tag disconnect $reason')});
-    on(Event.send, (data) => {print('$tag >> $data')});
-    on(Event.pong, (time) => {print('$tag ping:$time ms')});
+    on(Event.disconnecting, (reason) => {print('disconnecting $reason')});
+    on(Event.disconnect, (reason) => {print('disconnect $reason')});
+    on(Event.send, (data) => {print('>> $data')});
+    on(Event.pong, (time) => {print('ping:$time ms')});
   }
 
   void _onOpen(InternetAddress address) {
-    print('$tag open $address $state');
+    print('open $address $state');
   }
 
   void _onHandshake(Packet packet) {
-    print('$tag handshake $packet');
+    print('handshake $packet');
     if (packet.namespace == '/') {
       sendMessage(ConnectRequest('/home'));
     } else if (packet.namespace == '/home') {
@@ -41,7 +39,7 @@ class GameClientExample extends GameSocketClient {
   }
 
   void _onData(Uint8List data) {
-    print('$tag data[${data.length}] $data ');
+    print('data[${data.length}] $data ');
   }
 
   void _onRawData(Uint8List data) {
@@ -49,7 +47,8 @@ class GameClientExample extends GameSocketClient {
   }
 
   void _onRoomPacket(RoomPacket packet) {
-    if (packet.joinRoom && packet.roomName == 'lobby') {
+    var roomName = packet.roomName;
+    if (packet.joinRoom && roomName == 'lobby') {
       var msg =
           RoomEvent(packet.roomName!, namespace: '/home', event: 'hello', message: 'hello all');
       sendMessage(msg);
@@ -65,6 +64,6 @@ class GameClientExample extends GameSocketClient {
   }
 
   void _onClose() {
-    print('$tag close $state');
+    print('$close $state');
   }
 }

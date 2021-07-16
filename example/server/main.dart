@@ -27,7 +27,7 @@ class SocketServiceExample {
     server.on(ServerEvent.error, (data) => {print('/: eventError $data')});
     server.on(ServerEvent.close, (data) => {print('/: serverClose $data')});
     server.on(ServerEvent.raw, (data) => {print('/: raw $data')});
-    server.on(ServerEvent.createRoom, (data) => {print('/: createRoom: $data')});
+    server.on(ServerEvent.createRoom, (data) => {print('/: createRoom $data')});
     server.on(ServerEvent.joinRoom, (data) => {print('/: joinRoom $data')});
     server.on(ServerEvent.leaveRoom, (data) => {print('/: leaveRoom $data')});
     server.on(ServerEvent.deleteRoom, (data) => {print('/: deleteRoom $data')});
@@ -38,11 +38,11 @@ class SocketServiceExample {
   }
 
   void _onHomeConnect(dynamic data) {
-    print('Home: connect $data');
+    print('/home: connect $data');
   }
 
   void _onHomeData(dynamic data) {
-    print('Home: $data');
+    print('/home: $data');
     if (data is RoomPacket && data.roomName != null) {
       home.broadcast(data, rooms: {data.roomName!});
     }

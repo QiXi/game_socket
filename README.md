@@ -1,5 +1,8 @@
 Socket library for creating real-time multiplayer games.
 
+## Game socket
+The library was published in early access and is not stable, as it is being developed in parallel with other solutions. English is not a native language so there are no comments. At this stage, the library is for those who want to understand the source code and get a starting point for their solution or help me :)
+
 ## Usage
 
 Server:
@@ -17,8 +20,7 @@ class SocketServiceExample {
   late Namespace home;
 
   SocketServiceExample() {
-    server = GameSocketServer(
-        options: ServerOptions.byDefault()..supportRawData = true);
+    server = GameSocketServer(options: ServerOptions.byDefault()..supportRawData = true);
     home = server.of('/home');
     home.on(ServerEvent.connect, (data) => _onHomeConnect(data));
     home.on('hello', (packet) => _onHomeData(packet));
@@ -27,15 +29,15 @@ class SocketServiceExample {
       print('/: connection $socket');
       socket.on(ServerEvent.connect, (data) => _onConnect(data[0], data[1]));
       socket.on(Event.disconnecting, (data) => _onDisconnecting(data));
-      socket.on(Event.disconnect, (data) => _onDisconnect(data));
+      socket.on(Event.disconnect, (data) => _onDisconnect(data[0], data[1]));
       socket.on(Event.error, (data) => _onError(data));
       socket.on(Event.data, (data) => _onData(data));
       socket.on(Event.close, (data) => {_onClose(data)});
     });
     server.on(ServerEvent.error, (data) => {print('/: eventError $data')});
     server.on(ServerEvent.close, (data) => {print('/: serverClose $data')});
-    server.on(
-        ServerEvent.createRoom, (data) => {print('/: createRoom: $data')});
+    server.on(ServerEvent.raw, (data) => {print('/: raw $data')});
+    server.on(ServerEvent.createRoom, (data) => {print('/: createRoom $data')});
     server.on(ServerEvent.joinRoom, (data) => {print('/: joinRoom $data')});
     server.on(ServerEvent.leaveRoom, (data) => {print('/: leaveRoom $data')});
     server.on(ServerEvent.deleteRoom, (data) => {print('/: deleteRoom $data')});
@@ -46,26 +48,26 @@ class SocketServiceExample {
   }
 
   void _onHomeConnect(dynamic data) {
-    print('Home: connect $data');
+    print('/home: connect $data');
   }
 
   void _onHomeData(dynamic data) {
-    print('Home: $data');
+    print('/home: $data');
     if (data is RoomPacket && data.roomName != null) {
       home.broadcast(data, rooms: {data.roomName!});
     }
   }
 
   void _onConnect(String namespace, String socketId) {
-    print('/: connect $socketId ');
+    print('/: connect $socketId');
   }
 
   void _onDisconnecting(dynamic data) {
-    print('/: disconnecting $data ');
+    print('/: disconnecting $data');
   }
 
-  void _onDisconnect(dynamic data) {
-    print('/: disconnect $data ');
+  void _onDisconnect(String namespace, String reason) {
+    print('$namespace: disconnect reason:$reason');
   }
 
   void _onError(dynamic data) {
@@ -80,12 +82,13 @@ class SocketServiceExample {
     print('/: close $data');
   }
 }
+
 ```
 
 Client:
 
 ```dart
-import 'dart:io';
+import 'dart:io' show InternetAddress;
 import 'dart:typed_data';
 
 import 'package:game_socket/client.dart';
@@ -96,28 +99,28 @@ void main() {
 }
 
 class GameClientExample extends GameSocketClient {
-  static const String tag = 'Example:';
-
   GameClientExample() {
     on(Event.open, (address) => _onOpen(address));
     on(Event.handshake, (data) => _onHandshake(data));
     on(Event.data, (data) => _onData(data));
+    on(Event.raw, (data) => _onRawData(data));
     on(Event.error, (error) => _onError(error));
-    on(Event.closing, (_) => {print('$tag closing')});
+    on(Event.closing, (_) => {print('closing')});
     on(Event.close, (_) => _onClose());
     on(Event.roomPacket, (packet) => _onRoomPacket(packet));
     on(Event.packet, (packet) => _onPacket(packet));
-    on(Event.disconnecting, (reason) => {print('$tag disconnecting $reason')});
-    on(Event.disconnect, (reason) => {print('$tag disconnect $reason')});
-    on(Event.send, (data) => {print('$tag >> $data')});
+    on(Event.disconnecting, (reason) => {print('disconnecting $reason')});
+    on(Event.disconnect, (reason) => {print('disconnect $reason')});
+    on(Event.send, (data) => {print('>> $data')});
+    on(Event.pong, (time) => {print('ping:$time ms')});
   }
 
   void _onOpen(InternetAddress address) {
-    print('$tag open $address $state');
+    print('open $address $state');
   }
 
   void _onHandshake(Packet packet) {
-    print('$tag handshake $packet');
+    print('handshake $packet');
     if (packet.namespace == '/') {
       sendMessage(ConnectRequest('/home'));
     } else if (packet.namespace == '/home') {
@@ -126,13 +129,18 @@ class GameClientExample extends GameSocketClient {
   }
 
   void _onData(Uint8List data) {
-    print('$tag data[${data.length}] $data ');
+    print('data[${data.length}] $data ');
+  }
+
+  void _onRawData(Uint8List data) {
+    print('Raw: $data');
   }
 
   void _onRoomPacket(RoomPacket packet) {
-    if (packet.joinRoom && packet.roomName == 'lobby') {
-      var msg = RoomEvent(packet.roomName!,
-          namespace: '/home', event: 'hello', message: 'hello all');
+    var roomName = packet.roomName;
+    if (packet.joinRoom && roomName == 'lobby') {
+      var msg =
+          RoomEvent(packet.roomName!, namespace: '/home', event: 'hello', message: 'hello all');
       sendMessage(msg);
     }
   }
@@ -146,7 +154,7 @@ class GameClientExample extends GameSocketClient {
   }
 
   void _onClose() {
-    print('$tag close $state');
+    print('$close $state');
   }
 }
 ```
@@ -155,19 +163,19 @@ class GameClientExample extends GameSocketClient {
 ```
 listen null Options{ port:3103 raw:true closeOnError:false }
 /: connection GameClient{ 15466abe2006464e99b6c8b36f7f4ed8 ReadyState.open [137545126]}
-/: createRoom: 15466abe2006464e99b6c8b36f7f4ed8
+/: createRoom 15466abe2006464e99b6c8b36f7f4ed8
 /: joinRoom [15466abe2006464e99b6c8b36f7f4ed8, 15466abe2006464e99b6c8b36f7f4ed8]
 Home: connect [/home, 15466abe2006464e99b6c8b36f7f4ed8]
 ```
 
 ### Client log
 ```
-Example: open InternetAddress('127.0.0.1', IPv4) ReadyState.open
-Example: handshake Packet{[0.0 /], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:{3: 15466abe2006464e99b6c8b36f7f4ed8}}
-Example: >> Message{[/home] boolMask:4, int:[0, 0, 0, 0, 0, 0], string:{} null}
-Example: handshake Packet{[0.0 /home], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:{3: 15466abe2006464e99b6c8b36f7f4ed8}}
-Example: >> Message{[/home] boolMask:16, int:[0, 0, 0], string:{0: lobby} null}
-Example: >> Message{[/home] boolMask:512, int:[0, 0, 0], string:{0: lobby, 5: hello, 1: hello all} null}
+open InternetAddress('127.0.0.1', IPv4) ReadyState.open
+handshake Packet{[0.0 /], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:{3: 15466abe2006464e99b6c8b36f7f4ed8}}
+>> Message{[/home] boolMask:4, int:[0, 0, 0, 0, 0, 0], string:{} null}
+handshake Packet{[0.0 /home], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:{3: 15466abe2006464e99b6c8b36f7f4ed8}}
+>> Message{[/home] boolMask:16, int:[0, 0, 0], string:{0: lobby} null}
+>> Message{[/home] boolMask:512, int:[0, 0, 0], string:{0: lobby, 5: hello, 1: hello all} null}
 ```
 
 
