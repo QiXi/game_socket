@@ -12,7 +12,7 @@ class ServerOptions {
   int maxSessionIdleTime = 60; // seconds
   bool closeSocketOnError = false;
   bool sendRoomEvents = true;
-  int connectionTimeout;
+  int connectionTimeout; // ms
 
   final Schema mainSchema = GameSocketSchema();
   final List<Schema?> _schemas = List.filled(256, null);

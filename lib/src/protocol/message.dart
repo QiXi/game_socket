@@ -66,7 +66,8 @@ class Message with ZigZag, MessageBody, Radians {
 
   @override
   String toString() {
-    return 'Message{[$namespace] boolMask:$boolMask, int:$intList, string:$stringList $payloadBytes}';
+    return 'Message{~${schema.code}.${schema.version} $namespace, '
+        'boolMask:$boolMask, int:$intList, string:$stringList ${payloadBytes ?? ''}}';
   }
 }
 

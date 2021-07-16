@@ -10,6 +10,7 @@ class Packet extends Message {
 
   @override
   String toString() {
-    return 'Packet{[$schemaCode.$schemaVersion $namespace], bit:$bitMask, bool:$boolMask, int:$intList, string:$stringList, $payloadBytes}';
+    return 'Packet{~$schemaCode.$schemaVersion $namespace, '
+        'bit:$bitMask, bool:$boolMask, int:$intList, string:$stringList, ${payloadBytes ?? ''}}';
   }
 }

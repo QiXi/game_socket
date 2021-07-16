@@ -28,6 +28,11 @@ abstract class Schema {
     if (includedBytes) count += 1;
     return count;
   }
+
+  @override
+  String toString() {
+    return '$code.$version';
+  }
 }
 
 abstract class SimpleSchema extends Schema {
