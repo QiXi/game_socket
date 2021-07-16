@@ -54,6 +54,6 @@ class RoomSchema extends SimpleSchema {
 
   @override
   String toString() {
-    return 'RoomSchema{ $code.$version, boolCount:$boolCount intCount:$intCount, stringsCount:$stringsCount [$hashCode]}';
+    return 'RoomSchema{ $code.$version, boolCount:$boolCount intCount:$intCount, stringsCount:$stringsCount}';
   }
 }

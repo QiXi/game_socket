@@ -31,7 +31,7 @@ class GameSocketSchema extends Schema {
   static const int reservedInt8 = 0; // reserved int8
   static const int value = 1; // reserved
   static const int errorCode = value; // alias for value
-  static const int pingInterval = 2; // reserved
+  static const int pingInterval = 2; //
   @override
   int get int8Count => 3;
 
@@ -62,6 +62,6 @@ class GameSocketSchema extends Schema {
 
   @override
   String toString() {
-    return 'GameSocketSchema{$code.$version, boolCount:$boolCount intCount:$intCount, stringsCount:$stringsCount [$hashCode]}';
+    return 'GameSocketSchema{$code.$version, boolCount:$boolCount intCount:$intCount, stringsCount:$stringsCount}';
   }
 }

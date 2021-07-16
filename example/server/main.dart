@@ -49,7 +49,7 @@ class SocketServiceExample {
   }
 
   void _onConnect(String namespace, String socketId) {
-    print('/: connect $socketId');
+    print('$namespace: connect $socketId');
   }
 
   void _onDisconnecting(dynamic data) {
