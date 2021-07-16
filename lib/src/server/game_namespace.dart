@@ -50,13 +50,13 @@ class GameNamespace extends Namespace {
     adapter.broadcast(message, rooms: rooms ?? _targetRooms, excludeOne: exclude);
   }
 
-  /// Broadcast message queue to room.
+  /// Broadcast a list of messages to a room.
   @override
-  void broadcastQueue(List<Message> queue, String room, {SocketId? exclude}) {
-    for (var message in queue) {
+  void broadcastList(List<Message> list, String room, {SocketId? exclude}) {
+    for (var message in list) {
       message.namespace = name;
     }
-    adapter.broadcastQueue(queue, room, exclude: exclude);
+    adapter.broadcastList(list, room, exclude: exclude);
   }
 
   /// Broadcast event to room.

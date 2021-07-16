@@ -22,7 +22,7 @@ abstract class Adapter /*extends Emitter */ {
 
   void broadcastToRoom(Message message, String room, {SocketId? exclude});
 
-  void broadcastQueue(List<Message> queue, String room, {SocketId? exclude});
+  void broadcastList(List<Message> list, String room, {SocketId? exclude});
 
   void add(String room, GameClient socket);
 

@@ -64,14 +64,14 @@ class GameAdapter extends Adapter {
   }
 
   @override
-  void broadcastQueue(List<Message> queue, String room, {SocketId? exclude}) {
+  void broadcastList(List<Message> list, String room, {SocketId? exclude}) {
     if (socketsByRoom.containsKey(room)) {
       final sockets = socketsByRoom[room];
       final connectedSockets = namespace.connectedSockets;
       for (var socket in sockets!) {
         final socketId = socket.id;
         if ((exclude != socketId) && connectedSockets.contains(socketId)) {
-          for (var message in queue) {
+          for (var message in list) {
             socket.send(message);
           }
         }

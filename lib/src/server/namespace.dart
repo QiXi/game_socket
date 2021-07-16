@@ -21,8 +21,8 @@ abstract class Namespace extends Emitter {
   /// Broadcast message to one or many rooms.
   void broadcast(Message message, {Set<String>? rooms, SocketId? exclude});
 
-  /// Broadcast message queue to room.
-  void broadcastQueue(List<Message> queue, String room, {SocketId? exclude});
+  /// Broadcast a list of messages to a room.
+  void broadcastList(List<Message> list, String room, {SocketId? exclude});
 
   /// Broadcast event to room.
   void broadcastRoomEvent(String event, String room, {SocketId? exclude, dynamic data});

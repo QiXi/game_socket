@@ -107,9 +107,9 @@ class GameClient extends Emitter {
     namespace.broadcast(message, rooms: rooms, exclude: exclude);
   }
 
-  /// Broadcast message queue to room.
-  void broadcastQueue(List<Message> queue, String room, {SocketId? exclude}) {
-    namespace.broadcastQueue(queue, room, exclude: exclude);
+  /// Broadcast a list of messages to a room.
+  void broadcastList(List<Message> list, String room, {SocketId? exclude}) {
+    namespace.broadcastList(list, room, exclude: exclude);
   }
 
   /// Broadcasting event to room.
