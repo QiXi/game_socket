@@ -16,13 +16,13 @@ class ServerClient {
   final EngineSocket _socket;
   final Map<SocketId, GameClient> _clientById = {};
   final Map<String, GameClient> _clientByNamespace = {};
-  late int maxIncomingPacketSize;
+  final int maxIncomingPacketSize;
 
-  ServerClient(this._server, this._socket) {
+  ServerClient(this._server, this._socket)
+      : maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize {
     _socket.on(Engine.data, (data) => _onData(data));
     _socket.on(Engine.error, (data) => _onEngineError(data));
     _socket.on(Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
-    maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize;
   }
 
   SocketId get socketId => _socket.socketId;
