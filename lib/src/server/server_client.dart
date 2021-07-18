@@ -16,10 +16,12 @@ class ServerClient {
   final EngineSocket _socket;
   final Map<SocketId, GameClient> _clientById = {};
   final Map<String, GameClient> _clientByNamespace = {};
+  final PacketFactory packetFactory;
   final int maxIncomingPacketSize;
 
   ServerClient(this._server, this._socket)
-      : maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize {
+      : packetFactory = _server.getOptions().packetFactory,
+        maxIncomingPacketSize = _server.getOptions().maxIncomingPacketSize {
     _socket.on(Engine.data, (data) => _onData(data));
     _socket.on(Engine.error, (data) => _onEngineError(data));
     _socket.on(Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
@@ -67,7 +69,7 @@ class ServerClient {
           _onError('${ErrorString.unsupportedSchema} $code.$version');
           break;
         } else {
-          var packet = _createPacket(code, version, schema);
+          var packet = packetFactory.createPacket(schema);
           try {
             offset = packetDecoder.decode(packet, data, offset);
           } catch (e) {
@@ -111,16 +113,6 @@ class ServerClient {
       _server.emit(ServerEvent.raw, data);
     } else {
       _onError(ErrorString.unsupportedRaw);
-    }
-  }
-
-  Packet _createPacket(int code, int version, Schema schema) {
-    if (code == GSS().code) {
-      return GameSocketPacket();
-    } else if (code == RoomSchema().code) {
-      return RoomPacket();
-    } else {
-      return Packet(schema);
     }
   }
 

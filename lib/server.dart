@@ -9,5 +9,6 @@ export 'src/server/game_client.dart';
 export 'src/server/game_namespace.dart';
 export 'src/server/game_socket_server.dart';
 export 'src/server/namespace.dart';
+export 'src/server/packet_factory.dart';
 export 'src/server/server_options.dart';
 export 'src/server/server_responses.dart';
