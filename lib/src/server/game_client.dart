@@ -103,7 +103,6 @@ class GameClient extends Emitter {
 
   /// Broadcasting message to rooms.
   void broadcast(Message message, [Set<String>? rooms, SocketId? exclude]) {
-    message.namespace = _namespace.name;
     namespace.broadcast(message, rooms: rooms, exclude: exclude);
   }
 

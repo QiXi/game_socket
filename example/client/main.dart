@@ -49,8 +49,7 @@ class GameClientExample extends GameSocketClient {
   void _onRoomPacket(RoomPacket packet) {
     var roomName = packet.roomName;
     if (packet.joinRoom && roomName == 'lobby') {
-      var msg =
-          RoomEvent(packet.roomName!, namespace: '/home', event: 'hello', message: 'hello all');
+      var msg = RoomEvent(roomName!, namespace: '/home', event: 'hello', message: 'hello all');
       sendMessage(msg);
     }
   }

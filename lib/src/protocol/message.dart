@@ -30,8 +30,8 @@ class Message with ZigZag, MessageBody, Radians {
 
   bool getBool(int id) => ((boolMask >> id) & 0x1) == 1;
 
-  void putBool(int key, bool value) {
-    return (value) ? enable(key) : disable(key);
+  void putBool(int id, bool value) {
+    return (value) ? enable(id) : disable(id);
   }
 
   bool containsInt(int id) => id >= 0 && id < schema.intCount && intList[id] != 0;

@@ -33,7 +33,7 @@ void main() {
 
 class GameClientExample extends GameSocketClient {
   GameClientExample() {
-    on(Event.handshake, (data) => _onHandshake(data));
+    on(Event.handshake, (packet) => _onHandshake(packet));
     on(Event.roomPacket, (packet) => _onRoomPacket(packet));
   }
 
