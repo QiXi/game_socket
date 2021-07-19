@@ -14,9 +14,50 @@ The library was published in early access and is not stable, as it is being deve
 Support for `WebSocket` is not planned for the current day (but everything can change with the support of the community)
 
 
-## Usage
+## Example
+Examples:
+* [`example/client/main.dart`](https://github.com/QiXi/game_socket/blob/master/example/client/main.dart)
+* [`example/server/main.dart`](https://github.com/QiXi/game_socket/blob/master/example/server/main.dart)
 
-Server:
+
+## Usage
+Create client:
+
+```dart
+import 'package:game_socket/client.dart';
+
+void main() {
+  var client = GameClientExample();
+  client.connect('localhost', 3103);
+}
+
+class GameClientExample extends GameSocketClient {
+  GameClientExample() {
+    on(Event.handshake, (data) => _onHandshake(data));
+    on(Event.roomPacket, (packet) => _onRoomPacket(packet));
+  }
+
+  void _onHandshake(Packet packet) {
+    if (packet.namespace == '/') {
+      sendMessage(ConnectRequest('/home'));
+    } else if (packet.namespace == '/home') {
+      sendMessage(JoinRoomRequest('lobby', namespace: '/home'));
+    }
+  }
+
+  void _onRoomPacket(RoomPacket packet) {
+    var roomName = packet.roomName;
+    if (packet.joinRoom && roomName == 'lobby') {
+      var msg = RoomEvent(roomName!, namespace: '/home', event: 'hello', message: 'hello all');
+      sendMessage(msg);
+    }
+  }
+}
+```
+This client connects to the main `/` namespace on the server, then to the `/home` namespace. Then it sends a request to enter the `lobby` room, after which it dispatches a `hello` event containing the message text `hello all`.
+
+
+Create server:
 
 ```dart
 import 'package:game_socket/server.dart';
@@ -96,80 +137,6 @@ class SocketServiceExample {
 
 ```
 
-Client:
-
-```dart
-import 'dart:io' show InternetAddress;
-import 'dart:typed_data';
-
-import 'package:game_socket/client.dart';
-
-void main() {
-  var client = GameClientExample()..getOptions().supportRawData = true;
-  client.connect('localhost', 3103);
-}
-
-class GameClientExample extends GameSocketClient {
-  GameClientExample() {
-    on(Event.open, (address) => _onOpen(address));
-    on(Event.handshake, (data) => _onHandshake(data));
-    on(Event.data, (data) => _onData(data));
-    on(Event.raw, (data) => _onRawData(data));
-    on(Event.error, (error) => _onError(error));
-    on(Event.closing, (_) => {print('closing')});
-    on(Event.close, (_) => _onClose());
-    on(Event.roomPacket, (packet) => _onRoomPacket(packet));
-    on(Event.packet, (packet) => _onPacket(packet));
-    on(Event.disconnecting, (reason) => {print('disconnecting $reason')});
-    on(Event.disconnect, (reason) => {print('disconnect $reason')});
-    on(Event.send, (data) => {print('>> $data')});
-    on(Event.pong, (time) => {print('ping:$time ms')});
-  }
-
-  void _onOpen(InternetAddress address) {
-    print('open $address $state');
-  }
-
-  void _onHandshake(Packet packet) {
-    print('handshake $packet');
-    if (packet.namespace == '/') {
-      sendMessage(ConnectRequest('/home'));
-    } else if (packet.namespace == '/home') {
-      sendMessage(JoinRoomRequest('lobby', namespace: '/home'));
-    }
-  }
-
-  void _onData(Uint8List data) {
-    print('data[${data.length}] $data ');
-  }
-
-  void _onRawData(Uint8List data) {
-    print('Raw: $data');
-  }
-
-  void _onRoomPacket(RoomPacket packet) {
-    var roomName = packet.roomName;
-    if (packet.joinRoom && roomName == 'lobby') {
-      var msg =
-          RoomEvent(packet.roomName!, namespace: '/home', event: 'hello', message: 'hello all');
-      sendMessage(msg);
-    }
-  }
-
-  void _onPacket(Packet packet) {
-    print('Packet: $packet');
-  }
-
-  void _onError(String error) {
-    print('Error: $error');
-  }
-
-  void _onClose() {
-    print('$close $state');
-  }
-}
-```
-
 ###### Server log
 ```
 listen null Options{ port:3103 raw:true closeOnError:false }
@@ -189,18 +156,15 @@ handshake Packet{[0.0 /home], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:
 >> Message{[/home] boolMask:512, int:[0, 0, 0], string:{0: lobby, 5: hello, 1: hello all} null}
 ```
 
-
-## Tips for Beginners
-* If you are developing a browser game, then you need a `WebSocket` solution.
-* When designing a game for real-time communication, `UDP` should be preferred, since` TCP` will cause a delay in the event of packet loss.
-
-
 ## Plans
 * Initialization for sending `UPD` diagrams.
 * Automatic connections and reconnections.
 * Expanding the possibilities for working with rooms.
 * Conducting stress tests.
 
+## Tips for Beginners
+* If you are developing a browser game, then you need a `WebSocket` solution.
+* When designing a game for real-time communication, `UDP` should be preferred, since` TCP` will cause a delay in the event of packet loss.
 
 ## History of creation
 Sources that could have influenced the development of this work:
