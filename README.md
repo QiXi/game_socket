@@ -161,10 +161,12 @@ handshake Packet{[0.0 /home], bit:516, bool:16, int:[0, 0, 60, 0, 0, 0], string:
 
 ## Protocol
 
+The protocol is schematic based. This approach allows you to save the amount of data transferred, since the data type is not transferred with the message, and the length of the numbers is not serialized.
+
 Data types used in the schema
 
-| Type | Length | Range |
-| ---- | ------ | ----- |
+| Type | Size | Range |
+| ---- | ---- | ----- |
 | bool | 1 bit | true or false |
 | int8 | 1 byte | 0 to 255 |
 | int16 | 2 bytes | 0 to 65535 |
@@ -172,6 +174,63 @@ Data types used in the schema
 | string | 1 + value | 0 to 255 chars |
 | bytes | 2 + value | 0 to 65535 bytes |
 
+
+Schema creation
+```dart
+import 'package:game_socket/protocol.dart';
+typedef PS = PlayerStateSchema;
+class PlayerStateSchema extends SimpleSchema {
+  @override
+  int get code => 10; // unique schema code 10..255 
+  @override
+  int get version => 1; // version 0..255 to support game clients with different versions
+  
+  // bool
+  static const int reserved = 0; // reserved
+  @override
+  int get boolCount => 1;
+
+  // int8
+  static const int speed = 0; // 0.000..1.000
+  static const int health = 1; // max(100)
+  @override
+  int get int8Count => 2;
+  // int16
+  static const int uid = 2; // max(65535)
+  static const int angle = 3; // radians
+  static const int score = 4; // max(65535)
+  @override
+  int get int16Count => 3;
+  // int32
+  static const int elapsedTime = 5; // time for internal synchronization
+  static const int x = 6; // x-coordinate
+  static const int y = 7; // y-coordinate
+  @override
+  int get int32Count => 3;
+
+  // strings
+  static const int name = 0; // player name
+  @override
+  int get stringsCount => 1;
+}
+```
+When you create a schema, you do two things: you take the named cell number of the array and determine the length of the array to one of the five schema data types.
+
+
+Creating a message class
+```dart
+class PlayerStateMessage extends Message {
+  PlayerStateMessage(Player player, {required double elapsedTime}) : super(PS()) {
+    putUInt(PS.uid, player.uid);
+    putInt(PS.x, (player.positionBody.x * 1000).toInt()); // ~ -2000000.0000..+2000000.0000
+    putInt(PS.y, (player.positionBody.y * 1000).toInt());
+    putInt(PS.score, player.score);
+    putSingle(PS.speed, player.speed);
+    putRadians(PS.angle, player.rotationBody);
+    putUInt(PS.elapsedTime, (elapsedTime * 1000).toInt()); // double ms
+  }
+}
+```
 
 Data types when writing or reading messages
 
@@ -185,8 +244,8 @@ Data types when writing or reading messages
 | putInt    | int32  | int | -2147483648 to 2147483647 |
 | putUInt   | int32  | int | 0 to 4294967295 |
 | putString | string | String | 0 to 255 chars |
-| putSingle | ~(int8)~ | double | 0 to 1 step ~0.004 |
-| putRadians | ~(int16)~ | double | step ~0.00019 |
+| putSingle | ~int8~ | double | 0 to 1 step ~0.004 |
+| putRadians | ~int16~ | double | step ~0.0002 |
 | putPayload | bytes | Uint8List | 0 to 65535 bytes |
 
 
