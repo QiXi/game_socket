@@ -20,6 +20,15 @@ class Message with ZigZag, MessageBody, Radians {
       : stringList = {},
         intList = List.filled(schema.intCount, 0);
 
+  reset() {
+    boolMask = 0;
+    intList.fillRange(0, schema.intCount, 0);
+    stringList.clear();
+    bytesPerMessage = null;
+    payloadBytes = null;
+    raw = null;
+  }
+
   String getNamespace() => namespace;
 
   bool isEnabled(int id) => ((boolMask >> id) & 0x1) == 1;
