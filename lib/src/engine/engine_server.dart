@@ -15,14 +15,11 @@ class EngineServer extends Emitter {
 
   EngineServer();
 
-  void listen(address, int port) {
-    if (server != null) {
-      return;
+  void listen(address, int port) async {
+    if (server == null) {
+      server = await ServerSocket.bind(address, port);
+      server!.listen(_onData, onError: _onError, onDone: _onDone);
     }
-    ServerSocket.bind(address, port).then((ServerSocket socket) {
-      server = socket;
-      socket.listen(_onData, onError: _onError, onDone: _onDone);
-    });
   }
 
   void _onData(Socket socket) {
