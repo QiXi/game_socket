@@ -27,7 +27,7 @@ class ServerClient {
     _socket.on(Engine.close, (_) => _onClose(ClientDisconnectionReason.unknown));
   }
 
-  SocketId get socketId => _socket.socketId;
+  SocketId get socketId => _socket.session.socketId;
 
   ReadyState get readyState => _socket.readyState;
 
@@ -231,10 +231,10 @@ class ServerClient {
     _socket.offAll();
   }
 
-  Duration getIdleTime() => DateTime.now().difference(_socket.lastActivityTime);
+  Duration getIdleTime() => DateTime.now().difference(_socket.session.lastActivityTime);
 
   @override
   String toString() {
-    return 'ServerClient{ ${_socket.socketId} [$hashCode]}';
+    return 'ServerClient{ ${_socket.session.socketId} [$hashCode]}';
   }
 }

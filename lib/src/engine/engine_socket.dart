@@ -10,21 +10,14 @@ import 'typedef.dart';
 
 class EngineSocket extends Emitter {
   final Socket _socket;
-  final SocketId socketId;
   ReadyState readyState;
   final Session session;
-  late DateTime lastActivityTime;
 
-  EngineSocket(this._socket, this.socketId)
+  EngineSocket(this._socket)
       : readyState = ReadyState.connecting,
-        session = Session() {
-    lastActivityTime = DateTime.now();
+        session = Session(_socket.address, _socket.port) {
     _socket.listen(_onData, onError: _onError, onDone: _onDone);
   }
-
-  int get port => _socket.port;
-
-  InternetAddress get address => _socket.address;
 
   Socket getConnection() => _socket;
 
@@ -35,7 +28,7 @@ class EngineSocket extends Emitter {
   }
 
   void _onData(Uint8List data) {
-    lastActivityTime = DateTime.now();
+    session.lastActivityTime = DateTime.now();
     session.readBytes += data.length;
     emit(Engine.data, data);
   }
@@ -54,7 +47,7 @@ class EngineSocket extends Emitter {
       _socket.add(data);
     }
     session.writtenBytes += data.length;
-    lastActivityTime = DateTime.now();
+    session.lastActivityTime = DateTime.now();
   }
 
   void close() {
@@ -67,6 +60,6 @@ class EngineSocket extends Emitter {
 
   @override
   String toString() {
-    return 'EngineSocket{ $socketId, ${_socket.address.address}:${_socket.port} state:$readyState}';
+    return 'EngineSocket{ ${session.socketId}, ${_socket.address.address}:${_socket.port} state:$readyState}';
   }
 }

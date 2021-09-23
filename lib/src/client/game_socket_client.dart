@@ -36,7 +36,7 @@ class GameSocketClient extends Emitter {
   int get writtenBytes => _engine?.session.writtenBytes ?? 0;
 
   /// The [InternetAddress] used to connect this socket.
-  InternetAddress? get address => _engine?.address;
+  InternetAddress? get address => _engine?.session.address;
 
   Session? get statistic => _engine?.session;
 
@@ -48,7 +48,7 @@ class GameSocketClient extends Emitter {
     this.namespace = namespace;
     _forcedClose = false;
     Socket.connect(host, port, timeout: _options.connectTimeout).then((Socket socket) {
-      bind(EngineSocket(socket, 'this'));
+      bind(EngineSocket(socket));
       _engine!.onOpen();
     }).catchError((e) {
       print('Unable to connect: $e');
