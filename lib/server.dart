@@ -3,7 +3,7 @@ export 'src/engine/emitter.dart';
 export 'src/engine/error.dart';
 export 'src/engine/event.dart';
 export 'src/engine/server_events.dart';
-export 'src/engine/socket_stat.dart';
+export 'src/engine/session.dart';
 export 'src/engine/typedef.dart';
 export 'src/server/game_client.dart';
 export 'src/server/game_namespace.dart';

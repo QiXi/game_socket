@@ -5,5 +5,5 @@ export 'src/client/game_socket_client.dart';
 export 'src/engine/emitter.dart';
 export 'src/engine/error.dart';
 export 'src/engine/event.dart';
-export 'src/engine/socket_stat.dart';
+export 'src/engine/session.dart';
 export 'src/engine/typedef.dart';

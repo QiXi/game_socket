@@ -33,7 +33,7 @@ class ServerClient {
 
   Socket getConnection() => _socket.getConnection();
 
-  SocketStat get statistic => _socket.stat;
+  Session get statistic => _socket.session;
 
   void sendMessage(Message message) {
     if (_socket.readyState == ReadyState.open) {
@@ -41,7 +41,7 @@ class ServerClient {
         var rawMessage = messageEncoder.encode(message, message.schema);
         message.raw = rawMessage;
         _socket.send(rawMessage);
-        _socket.stat.addWrittenPacket();
+        _socket.session.addWrittenPacket();
       } else {
         _socket.send(message.raw!);
       }
@@ -117,7 +117,7 @@ class ServerClient {
   }
 
   void _onDecoded(Packet packet) {
-    _socket.stat.addReadPacket();
+    _socket.session.addReadPacket();
     if (packet is GameSocketPacket) {
       _onGameSocketPacket(packet);
     } else {
