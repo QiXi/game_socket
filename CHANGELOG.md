@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.0.3 (2021-09-23)
+
+* Fix `ServerSocket.bind`
+* Add `reset` in `Message`
+
 ## 0.0.2
 
 * Fix `payloadBytes` in `PacketDecoder`

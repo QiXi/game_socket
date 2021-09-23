@@ -1,6 +1,6 @@
 name: game_socket
 description: Socket library for creating real-time multiplayer games. Based on TCP, with the ability to send messages over UDP (planned).
-version: 0.0.2
+version: 0.0.3
 homepage: 'https://github.com/QiXi/game_socket'
 
 environment:

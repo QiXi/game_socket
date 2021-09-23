@@ -47,7 +47,7 @@ class GameSocketServer {
   }
 
   void listen([dynamic address, int? port]) {
-    print('listen $port $_options');
+    print('listen ${address ?? ':' ?? port ?? ''} $_options');
     _engine.listen(address ?? InternetAddress.anyIPv4, port ?? _options.port);
   }
 
