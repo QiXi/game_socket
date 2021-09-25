@@ -33,7 +33,7 @@ class ServerClient {
 
   Socket getConnection() => _socket.getConnection();
 
-  Session get statistic => _socket.session;
+  Session get session => _socket.session;
 
   void sendMessage(Message message) {
     if (_socket.readyState == ReadyState.open) {

@@ -47,7 +47,7 @@ class GameClient extends Emitter {
 
   Duration getIdleTime() => _parent.getIdleTime();
 
-  Session get statistic => _parent.statistic;
+  Session get session => _parent.session;
 
   /// Joins a room.
   void join(String room) {
