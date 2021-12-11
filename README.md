@@ -67,6 +67,12 @@ Data types when writing or reading messages
 * When designing a game for real-time communication, `UDP` should be preferred, since` TCP` will cause a delay in the event of packet loss.
 
 
+## Support
+You can support the development of libraries for creating multiplatform games in Flutter:
+
+[![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/flutterio)
+
+
 ## History of creation
 Sources that could have influenced the development of this work:
 
